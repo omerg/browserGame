@@ -1,0 +1,382 @@
+DROP TABLE race;
+DROP TABLE planet;
+DROP TABLE account;
+DROP TABLE alliance;
+
+DROP TABLE log_fleet_move;
+DROP TABLE log_research;
+DROP TABLE log_construction;
+
+DROP TABLE  construction_index;
+
+DROP TABLE log_ship_design;
+DROP TABLE log_existing_ship;
+DROP TABLE log_own_design;
+
+DROP TABLE tech_tree;
+
+DROP TABLE ship_index;
+
+DROP TABLE computer;
+DROP TABLE shield;
+DROP TABLE ecm;
+DROP TABLE armor;
+DROP TABLE engine;
+DROP TABLE maneuver;
+DROP TABLE weapon;
+DROP TABLE special_weapon;
+
+
+-- COMPLETE------------------------
+CREATE TABLE race(
+id TINYINT,
+ideal_temp SMALLINT NOT NULL,
+ideal_grav SMALLINT NOT NULL,
+repro_rate SMALLINT NOT NULL,
+labor_rate SMALLINT NOT NULL,
+intelligence SMALLINT NOT NULL,
+survival SMALLINT NOT NULL,
+UNIQUE(ideal_temp, ideal_grav, repro_rate, labor_rate, intelligence, survival),
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE planet(
+id INTEGER NOT NULL AUTO_INCREMENT,
+name VARCHAR(50) DEFAULT 'MyPlanet',
+solar_system TINYINT,
+galaxy TINYINT,
+position TINYINT,
+gravity SMALLINT,
+size SMALLINT,
+temp SMALLINT,
+environ_id TINYINT,
+min_pot_id TINYINT,
+life_pot_id TINYINT,
+UNIQUE(galaxy, solar_system, position),
+PRIMARY KEY (id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE account(
+id INTEGER NOT NULL AUTO_INCREMENT,
+race_id TINYINT,
+init_planet INTEGER,
+alliance_id INTEGER UNIQUE,
+name VARCHAR(50),
+username VARCHAR(50) NOT NULL,
+password VARCHAR(50) NOT NULL,
+points INTEGER,
+ranking INTEGER,
+register_date DATE,
+last_login DATE,
+UNIQUE(username, password),
+PRIMARY KEY(id),
+FOREIGN KEY (race_id)
+REFERENCES race ON UPDATE CASCADE,
+FOREIGN KEY(init_planet)
+REFERENCES planet ON UPDATE CASCADE,
+FOREIGN KEY(alliance_id)
+REFERENCES alliance ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE alliance(
+id INTEGER NOT NULL AUTO_INCREMENT,
+tag VARCHAR(50) NOT NULL UNIQUE,
+establish_date DATE,
+title VARCHAR(100),
+member_count INTEGER,
+description TEXT,
+website VARCHAR(150),
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE log_fleet_move(
+issue_no INTEGER NOT NULL AUTO_INCREMENT,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+user_id INTEGER NOT NULL,
+ship_id INTEGER NOT NULL,
+count INTEGER,
+mission CHAR(1) NOT NULL 
+CHECK (mission IN ('A','S','C', 'L' 'N')),
+origin_ss TINYINT NOT NULL,
+origin_g TINYINT NOT NULL,
+origin_p TINYINT NOT NULL,
+departure TIMESTAMP NOT NULL,
+target_ss TINYINT NOT NULL,
+target_g TINYINT NOT NULL,
+target_p TINYINT NOT NULL,
+arrival TIMESTAMP NOT NULL,
+cost INTEGER,
+PRIMARY KEY(issue_no),
+FOREIGN KEY(ship_id)
+REFERENCES ship_index ON UPDATE CASCADE,
+FOREIGN KEY(user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		   ON DELETE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE log_research(
+issue_no INTEGER NOT NULL AUTO_INCREMENT,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+user_id INTEGER NOT NULL,
+research_id SMALLINT NOT NULL,
+time_elapsed TIMESTAMP NOT NULL,
+cost INTEGER NOT NULL,
+PRIMARY KEY(issue_no),
+FOREIGN KEY(user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		   ON DELETE CASCADE,
+FOREIGN KEY(research_id)
+REFERENCES tech_tree(id) ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE log_construction(
+issue_no INTEGER NOT NULL AUTO_INCREMENT,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+user_id INTEGER NOT NULL,
+construction_id SMALLINT NOT NULL,
+time_elapsed TIMESTAMP NOT NULL,
+cost INTEGER NOT NULL,
+PRIMARY KEY(issue_no),
+FOREIGN KEY(user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		   ON DELETE CASCADE,
+FOREIGN KEY(construction_id)
+REFERENCES construction_index(id) ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE construction_index(
+id SMALLINT NOT NULL ,
+abstract TEXT,
+detail TEXT,
+name VARCHAR(100) NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE log_ship_design(
+issue_no INTEGER NOT NULL AUTO_INCREMENT,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+user_id INTEGER NOT NULL,
+ship_id INTEGER NOT NULL,
+cost INTEGER NOT NULL,
+PRIMARY KEY(issue_no),
+FOREIGN KEY (user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		   ON DELETE CASCADE,
+FOREIGN KEY (ship_id)
+REFERENCES ship_index(id) ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE log_existing_ship(
+issue_no INTEGER NOT NULL AUTO_INCREMENT,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+user_id INTEGER NOT NULL,
+ship_id INTEGER NOT NULL,
+count INTEGER NOT NULL,
+cost INTEGER NOT NULL,
+PRIMARY KEY(issue_no),
+FOREIGN KEY (user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		   ON DELETE CASCADE,
+FOREIGN KEY (ship_id)
+REFERENCES ship_index(id) ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE log_own_design(
+issue_no INTEGER NOT NULL AUTO_INCREMENT,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+user_id INTEGER NOT NULL,
+ship_id INTEGER NOT NULL,
+count INTEGER NOT NULL,
+cost INTEGER NOT NULL,
+PRIMARY KEY(issue_no),
+FOREIGN KEY (user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		   ON DELETE CASCADE,
+FOREIGN KEY (ship_id)
+REFERENCES ship_index(id) ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE tech_tree(
+id SMALLINT NOT NULL,
+abstract TEXT,
+detail TEXT,
+prerequisite SMALLINT,
+FOREIGN KEY(prerequisite)
+REFERENCES tech_tree(id) ON UPDATE CASCADE
+			 ON DELETE CASCADE,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE ship_index(
+id INTEGER NOT NULL,
+user_id INTEGER,
+name VARCHAR(100) NOT NULL,
+abstract TEXT,
+detail TEXT,
+total_space INTEGER NOT NULL,
+computer_id SMALLINT NOT NULL,
+shield_id SMALLINT NOT NULL,
+ecm_id SMALLINT NOT NULL,
+armor_id SMALLINT NOT NULL,
+engine_id SMALLINT NOT NULL,
+maneuver_id SMALLINT NOT NULL,
+nr_of_engines INTEGER NOT NULL,
+weapon_1_id SMALLINT NOT NULL,
+weapon_1_nr INTEGER NOT NULL,
+weapon_2_id SMALLINT NOT NULL,
+weapon_2_nr INTEGER NOT NULL,
+weapon_3_id SMALLINT NOT NULL,
+weapon_3_nr INTEGER NOT NULL,
+weapon_4_id SMALLINT NOT NULL,
+weapon_4_nr INTEGER NOT NULL,
+special_1_id SMALLINT NOT NULL,
+special_2_id SMALLINT NOT NULL,
+PRIMARY KEY(id),
+FOREIGN KEY (user_id)
+REFERENCES account(id) ON UPDATE CASCADE
+		       ON DELETE CASCADE,
+FOREIGN KEY (computer_id)
+REFERENCES computer(id) ON UPDATE CASCADE,
+FOREIGN KEY (shield_id)
+REFERENCES shield(id) ON UPDATE CASCADE,
+FOREIGN KEY (ecm_id)
+REFERENCES ecm(id) ON UPDATE CASCADE,
+FOREIGN KEY (armor_id)
+REFERENCES armor(id) ON UPDATE CASCADE,
+FOREIGN KEY (engine_id)
+REFERENCES engine(id) ON UPDATE CASCADE,
+FOREIGN KEY (maneuver_id)
+REFERENCES maneuver(id) ON UPDATE CASCADE,
+FOREIGN KEY (weapon_1_id)
+REFERENCES weapon(id) ON UPDATE CASCADE,
+FOREIGN KEY (weapon_2_id)
+REFERENCES weapon(id) ON UPDATE CASCADE,
+FOREIGN KEY (weapon_3_id)
+REFERENCES weapon(id) ON UPDATE CASCADE,
+FOREIGN KEY (weapon_4_id)
+REFERENCES weapon(id) ON UPDATE CASCADE,
+FOREIGN KEY (special_1_id)
+REFERENCES special_weapon(id) ON UPDATE CASCADE,
+FOREIGN KEY (special_2_id)
+REFERENCES special_weapon(id) ON UPDATE CASCADE
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE computer(
+id SMALLINT NOT NULL,
+type VARCHAR(100) NOT NULL,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+power INTEGER NOT NULL,
+space INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE shield(
+id SMALLINT NOT NULL,
+type VARCHAR(100) NOT NULL,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+power INTEGER NOT NULL,
+space INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE ecm(
+id SMALLINT NOT NULL,
+type VARCHAR(100) NOT NULL,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+power INTEGER NOT NULL,
+space INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE armor(
+id SMALLINT NOT NULL,
+type VARCHAR(100) NOT NULL,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE engine(
+id SMALLINT NOT NULL,
+type VARCHAR(100) NOT NULL,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+space INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE maneuver(
+id SMALLINT NOT NULL,
+class SMALLINT NOT NULL,
+speed INTEGER NOT NULL,
+cost INTEGER NOT NULL,
+power INTEGER NOT NULL,
+space INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE weapon(
+id SMALLINT NOT NULL,
+max INTEGER NOT NULL,
+description TEXT,
+damage INTEGER NOT NULL,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+power INTEGER NOT NULL,
+space INTEGER NOT NULL,
+range INTEGER NOT NULL,
+PRIMARY KEY(id)
+);
+
+
+-- COMPLETE------------------------
+CREATE TABLE special_weapon(
+id SMALLINT NOT NULL,
+description TEXT,
+cost INTEGER NOT NULL,
+size INTEGER NOT NULL,
+power INTEGER NOT NULL,
+space INTEGER NOT NULL,
+PRIMARY KEY(id)
+);

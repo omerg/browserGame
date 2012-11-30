@@ -1,0 +1,197 @@
+##############################################################################
+# Countdown                     Version 1.21                                 #
+# Copyright 1996 Matt Wright    mattw@scriptarchive.com                      #
+# Created 9/1/95                Last Modified 10/8/95                        #
+# Scripts Archive at:           http://www.scriptarchive.com/                #
+##############################################################################
+# If you run into any problems while trying to configure this scripts, help  #
+# is available.  The steps you should take to get the fastest results, are:  #
+#       1) Read this file thoroughly					     #
+#       2) Consult the Matt's Script Archive Frequently Asked Questions:     #
+#               http://www.scriptarchive.com/faq/                            #
+#       3) If you are still having difficulty installing this script,        #
+#          you may wish to look at the resources listed here:                #
+#               http://www.scriptarchive.com/help/                           #
+#                                                                            #
+# Hopefully that will be able to help you solve your problems.  Due to time  #
+# constraints I can no longer offer technical support for this code.         #
+##############################################################################
+# COPYRIGHT NOTICE                                                           #
+# Copyright 1996 Matthew M. Wright  All Rights Reserved.                     #
+#                                                                            #
+# Countdown may be used and modified free of charge by anyone so long as     #
+# this copyright notice and the comments above remain intact.  By using this #
+# code you agree to indemnify Matthew M. Wright from any liability that      #  
+# might arise from it's use.                                                 #  
+#                                                                            #
+# Selling the code for this program without prior written consent is         #
+# expressly forbidden.  In other words, please ask first before you try and  #
+# make money off of my program.                                              #
+#                                                                            #
+# Obtain permission before redistributing this software over the Internet or #
+# in any other medium.	In all cases copyright and header must remain intact.#
+##############################################################################
+
+The Countdown script is a somewhat simple script, which takes the time you give 
+it and tells you the number of years, months, days, hours, minutes, seconds 
+until that event will occur.  More details on how to use this script are below.
+
+WHAT THIS SCRIPT CONTAINS:
+        This script comes with 3 different files:
+                1) countdown.pl - The Perl script which does the calculation 
+                                  of the time until an event will occur.
+                2) README - The file that does all the explaining.
+                3) countdown.html - An example of ways to incorporate 
+                   countdown.pl and use it properly.
+
+
+You will have to do some minimal configuration of the countdown.pl file:
+
+COUNTDOWN.PL -
+        The countdown.pl file is the main file in this package.  This file 
+needs to be placed in the server's cgi-bin or have its name changed to 
+countdown.cgi.  Keep in mind the latter option only works should your server 
+be set up to treat all .cgi files in a script manner.  If you are not sure 
+about this, consult your system administrator.  Inside the countdown.pl file 
+you can do one of two things:
+
+        1) If you plan to just call the same date every time from this 
+           script, change the @from_date variable to the date you want it 
+           to countdown to.  This can include all the way up to seconds.  The
+           format for this should look like:
+
+              @from_date = (yyyy,mm,dd,hh,mm,ss);
+
+                Where:
+                        yyyy - The Year in Four Digits.
+                        mm   - The first mm is the month number from 1-12.
+                        dd   - The Day of the month.  Values range from 1-31.
+                        hh   - The hour of the day.  Values range from 0-23.
+                        mm   - The second mm is the minute of the hour from 
+                               0-59.
+                        ss   - The ss stands for seconds and the value can 
+                               range from 0-59.
+
+        2) If you plan to call different dates via a html page, you don't have 
+           to worry about setting any variables inside the script.
+
+At any rate you will probably want to edit the subroutines &html_header and 
+&html_trailer, to customize it for your wants/needs.
+
+------------------------------------------------------------------------------
+
+HOW DO I IMPLEMENT THIS?!
+
+1) If you have defined the @from_date in the countdown.pl file and you wish to 
+   only call the same value each time, you can simply do the following:
+
+   <a href="http://your.server/cgi-bin/countdown.pl">Countdown to ...</a>
+
+   When the user clicks on this they will be taken to a cgi generated page that
+   tells them the countdown status.
+
+2) Should you want to use this counter for various countdown you can also call 
+   a specific date directly from the link, in the same fashion as you would 
+   have defined @from_date. (See Above for info on how to define @from_date.)
+   Let's say I want to countdown to my birthday in 1996.  My birthday is 
+   April 15: 4/15, so I would do something like:
+
+    <a href="http://my.server/cgi-bin/countdown.pl?1996,4,15,0,0,0">Countdown 
+    to my birthday!</a>
+
+3)  Allow users to countdown to their own dates!  If you want to do this you 
+    would use the following syntax:
+
+    <FORM METHOD=GET ACTION="http://your.server/cgi-bin/countdown.pl">
+    <INPUT TYPE=TEXT NAME=""><P>
+    <INPUT TYPE=SUBMIT>
+    </FORM>
+
+    Then when the user types in his/her query the program will generate an 
+    automatic response.  Make sure to let your users and yourself know that 
+    the format for the query must match the exact same definition as @from_date. 
+    (See Above for info on how to define @form_date.)
+-------------------------------------------------------------------------------
+
+ADVANCED FEATURES OF COUNTDOWN!
+
+In Some situations it may be impractical to count out to seconds.  Or maybe if 
+you are counting down to something closer than year, you will want to leave 
+out the year portion of the countdown since it is only going to be 0 all the 
+tie anyways.  Or maybe the same goes for month, day, etc...  Countdown has a 
+built in feature to allow you to do this.  Instead of defining all categories 
+in @from_date you can do the following:
+
+1) Say I want to leave out the year in the countdown to my birthday (From the 
+   example above.) I could also do this:
+
+    <a href="http://my.server/cgi-bin/countdown.pl?XX,4,15,0,0,0">Countdown
+    to my birthday!</a>
+
+   When the user gets the returned html document, the # of years will not be 
+   shown.  You can put an 'XX' in any of the fields (year, month, day, hour, 
+   minute, second) and it will disregard that amount of time.
+
+2) You can also define the same way inside of the countdown.pl.  If you are 
+   using a standard countdown, meaning that you see no need for  multiple 
+   countdowns, you can set your @from_date in your Perl script to reflect this 
+   (This concept is also mentioned above).  You can substitute in 'XX' for any 
+   amount of time you don't want. (Be it year, month, day, hour, minute, or
+   second)
+
+-------------------------------------------------------------------------------
+
+OTHER USEFUL THINGS COUNTDOWN DOES BEHIND THE SCENES:
+
+1) Will not return a negative value.  Often times you would see a negative 
+   number of hours.  Instead, when countdown comes across a negative value, it 
+   simply adds the correct number (12 for months, appropriate number for days, 
+   24 for hours, 60 for minutes and seconds).  It then subtracts one from the
+   next highest category so that your time comes out perfect, and all in 
+   positive time.  Years will appear in negative time, since if you are that 
+   far behind, you're messed up!  :)
+
+2) Calculates number of days in each month,and recognizes leap years to!
+
+3) Notices the difference between 1 hour and 2 hours.  So that you get proper 
+   English instead of 1 hours. Works the same for other units.
+
+------------------------------------------------------------------------------
+
+HISTORY:
+Version 1.0             9/1  - Script Created.
+Version 1.1             9/3  - Improved the script based on suggestions by 
+                               Scott Lipcon:
+                               - Added an extra 0 to the seconds and minutes 
+                                 if the times were less than ten, so the 
+                                 clock came out looking like 5:00:00 instead
+                                 of 5:0:0
+                               - Changed the '.' in the time to a ':' between 
+                                 seconds and minutes so that clock looks 
+                                 like: '5:00:00' instead of '5:00.00'
+                               - Corrected the leap year system, so that it 
+                                 will get leap years correct.
+                               - Commented the file better.
+                             - Edited the README file slightly.
+Version 1.2             9/8  - Several bugs fixed based on the obersvations by 
+                               Elton Taupin.
+                               - Bug fixed that caused current date to be 
+                                 screwed up when the time was < 10 minutes.  
+                                 The problem had something to do with a 
+                                 misplaced colon.
+                               - Fixed a bug in the countdown portion of the 
+                                 script, which caused an extra date to be 
+                                 displayed on the countdown on certain 
+                                 instances.  It was a case of subtracting 
+                                 from $month, instead of $real_month.
+Version 1.21                   - Slight bug with 1 too many months fixed.
+                   12/27/99    - Fixed small Y2K date problem
+-----------------------------------------------------------------------------
+
+This script is provided to be useful and comes with no warranty, express or 
+implied.  I cannot guarantee the safety of it, yet I see no urgent problems.  
+I only did my best.
+
+This script is provided for free, so I hope you enjoy it!
+______________________________________________________________________________
+Matt Wright   -   mattw@scriptarchive.com   -   http://www.scriptarchive.com/

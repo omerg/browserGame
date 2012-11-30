@@ -1,0 +1,28 @@
+CREATE TABLE `omerg`.`account` (
+`id` INT NOT NULL AUTO_INCREMENT ,
+`username` VARCHAR( 30 ) NOT NULL ,
+`pass` VARCHAR( 30 ) NOT NULL ,
+`reserve` INT( 50 ) NOT NULL ,
+UNIQUE (
+`id` 
+)
+) ENGINE = MYISAM 
+
+CREATE TABLE log
+(
+action_ref INTEGER NOT NULL AUTO_INCREMENT,
+action_id INTEGER,
+date TIMESTAMP,
+value INTEGER,
+id INTEGER,
+PRIMARY KEY(action_ref),
+FOREIGN KEY(id)
+REFERENCES account
+);
+
+CREATE TABLE action_def
+(
+action_ref INTEGER,
+description TEXT,
+PRIMARY KEY (action_ref)
+)

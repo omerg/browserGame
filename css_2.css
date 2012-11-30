@@ -1,0 +1,319 @@
+/*Style Sheet Nr 1 */
+
+/*File Name: css_1.css*/
+/*Author: Omer Gurarslan*/
+/*Date Created: */
+
+/***********************************/
+/**********HTML TAG STYLES**********/
+/***********************************/
+
+body
+{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:10px;
+	color:#000000;
+	text-align:center;
+	background-color:#FFFFFF;
+	margin:0px;
+	/*background-image:url(background_10.gif);
+	background-attachment:fixed;*/
+}
+
+/*hyperlink and anchor tag styles*/
+
+a
+{
+color:#FF9800;
+}
+
+
+/*header taga styles*/
+h1{font-size:26px;
+color:#263248;
+}
+h2{font-size:18px;
+color:#263248;}
+h3{font-size:14px;
+color:#FF9800;}
+
+/*list tag styles*/
+ul{list-style-type: square;
+padding:10px;}
+ul ul{list-style-type: disc;}
+ul ul ul{ list-style-type:circle;}
+
+ol{list-style-type:decimal;}
+
+/*horizontal rule styles*/
+
+hr
+{
+color:#263248;
+height:4px;
+margin:-5px -7px -7px -7px;
+}
+
+/*new classes*/
+
+.form_button /*new class for input_text*/
+{
+	font-size: 12px; 
+	background-color: #FFE6E6; 
+	border: 1px solid #CCCCCC;
+}
+
+.form_text /*new class for input_button*/
+{
+	font-size: 12px; 
+	background-color: #FFFFFF; 
+	border: 1px solid #CCCCCC;
+	width:70px;
+}
+
+/****************************************/
+/*Layout Div's                          */
+/****************************************/
+
+
+#masterhead{
+border-width:1px;
+height:100px;
+margin-left: 10%;
+margin-right: 10%;
+}
+
+#global_menu{
+width:800px;
+margin-left: 10%;
+margin-right: 10%;
+}
+
+.global_link{
+	float:left;
+	width:90px;
+	height:20px;
+	background-color:#FF9800;
+	margin-right:2px;
+	/*background-image:url(background_5.gif);*/
+	padding-left:4px;
+	padding-right:4px;
+	padding-top:2px;
+	padding-bottom:2px;
+	
+	}
+#breadcrumb{
+text-align:left;
+	width:800px;
+	clear:both;
+	padding: 5px 0px 5px 10px;
+	font: small Verdana,sans-serif;
+	margin-left: 10%;
+margin-right: 10%;
+}
+
+#pagecell{
+text-align:left;
+background-color:#F2F2F2;
+border-width:1px;
+border-style:solid;
+border-color:#000000;
+margin-left: 10%;
+margin-right: 10%;
+padding:0px 0px 10px 0px;
+}
+
+#navigator{
+height:200px;
+top:-1px;
+right:0px;
+float:right;
+padding:5px;
+border-left-width:1px;
+border-left-style:solid;
+border-left-color:#666666;
+
+}
+
+.content_left{
+float:left;
+	width:550px;
+	padding: 3px;
+	margin:10px 10px 0px 10px;
+	background-color:#F8F8F8;	
+	border-width:1px;
+	border-style:solid;
+	border-color:#A5B4CF;/**/
+}
+
+.content_right{
+	width:200px;
+	float:right;
+	padding: 0px;
+	margin: 10px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#000000;
+	background-color:#F1F0ED;
+}
+
+#banner{
+	position:abslute;
+	float:left;
+	clear:both;
+	margin:1px;
+	top:-1px;
+	left:-1px;
+	text-align:left;
+}
+
+#top_left {
+	position:absolute;
+	top: -1px;
+	left: -1px;
+	margin: 0px;
+	padding: 0px;
+	z-index: 100;
+}
+
+#top_right {
+	position:absolute;
+	top: -1px;
+	right: -1px;
+	margin: 0px;
+	padding: 0px;
+	z-index: 100;
+}
+
+#bottom_left {
+	position:absolute;
+	bottom: -1px;
+	left: -1px;
+	margin: 0px;
+	padding: 0px;
+	z-index: 100;
+}
+
+#bottom_right {
+	position:absolute;
+	bottom: -1px;
+	right: -1px;
+	margin: 0px;
+	padding: 0px;
+	z-index: 100;
+}
+
+/****************************************/
+/*Component Layout Div's                */
+/****************************************/
+
+
+#top_bar{
+font-size:10px;
+}
+
+.global_link a:link, .global_link a:visited {
+
+	display:block;
+	
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+.global_link a:hover {
+
+	text-decoration:none;
+background-image:none;
+color:#263248;
+}
+
+#logo{
+	position:absolute;
+	top: -1px;
+	left: -1px;
+	margin:20px;
+	padding: 0px;
+	z-index: 100;}
+
+#announcement{
+float:right;}
+
+#section_link{}
+
+#quick_link{}
+
+/************** pageName styles ****************/
+
+#pageName{
+	padding: 0px 0px 14px 10px;
+	margin: 0px;
+}
+
+#pageName img{
+	position: absolute;
+	top: 0px;
+	right: 6px;
+	padding: 0px;
+	margin: 0px;
+	z-index:100;
+}
+
+/************* breadCrumb styles ***************/
+
+
+#breadcrumb a:link, #breadcrumb a:visited{
+	text-decoration: underline;
+	color:#000000;}
+
+#breadcrumb a:hover{
+	color: #263248;
+	text-decoration: underline;
+}
+
+/************** siteInfo styles ****************/
+
+#site_info{
+	width:800px;
+	font-size: 10px;;
+	padding:5px;
+}
+
+/************ sectionLinks styles **************/
+
+.sectionLinks{
+	margin: 0px;
+	padding: 0px;
+
+}
+
+.sectionLinks a{
+	display: block;
+	border:1px solid #263248;
+	/*image:url(background_6.gif);*/
+	background-color:#FFFFFF;
+	padding: 5px 8px 8px 10px;
+	width:180px;
+	margin:2px;
+	color: #7E8AA2;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.sectionLinks a:hover{
+color:#CCFF33;
+background-color:#263248;
+color:#FFFFFF;
+}
+
+
+
+/************* Quick Links styles **************/
+
+/**************** advert styles *****************/
+
+/********************* end **********************/
+
+
+
+	
+	
